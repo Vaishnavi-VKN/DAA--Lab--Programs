@@ -1,0 +1,25 @@
+#include <iostream>
+using namespace std;
+
+// Function to find the safe position
+int josephus(int n, int k) {
+    if (n == 1)
+        return 0;
+    else
+        return (josephus(n - 1, k) + k) % n;
+}
+
+int main() {
+    int n, k;
+
+    cout << "Enter number of people: ";
+    cin >> n;
+
+    cout << "Enter step count (k): ";
+    cin >> k;
+
+    // +1 because function returns 0-based index
+    cout << "Safe position is: " << josephus(n, k) + 1;
+
+    return 0;
+}
