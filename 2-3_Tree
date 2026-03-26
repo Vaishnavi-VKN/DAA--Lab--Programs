@@ -1,0 +1,63 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+struct Node {
+    vector<int> keys;       // can hold 1 or 2 keys
+    vector<Node*> children; // can hold 2 or 3 children
+    bool isLeaf;
+
+    Node(bool leaf = true) : isLeaf(leaf) {}
+};
+
+class TwoThreeTree {
+    Node* root;
+
+    void inorder(Node* node) {
+        if (!node) return;
+        if (node->isLeaf) {
+            for (int k : node->keys) cout << k << " ";
+        } else {
+            for (size_t i = 0; i < node->keys.size(); i++) {
+                inorder(node->children[i]);
+                cout << node->keys[i] << " ";
+            }
+            inorder(node->children.back());
+        }
+    }
+
+public:
+    TwoThreeTree() { root = nullptr; }
+
+    void insert(int val) {
+        // For simplicity, just create a root if empty
+        if (!root) {
+            root = new Node();
+            root->keys.push_back(val);
+            return;
+        }
+        // This is a simplified demo: real 2-3 tree insertion
+        // requires splitting nodes when they overflow.
+        root->keys.push_back(val);
+        sort(root->keys.begin(), root->keys.end());
+        if (root->keys.size() > 2) {
+            cout << "Node split needed (not implemented in this demo)\n";
+        }
+    }
+
+    void display() {
+        inorder(root);
+        cout << endl;
+    }
+};
+
+int main() {
+    TwoThreeTree tree;
+    tree.insert(10);
+    tree.insert(20);
+    tree.insert(30);
+
+    cout << "Inorder traversal:\n";
+    tree.display();
+    return 0;
+}
