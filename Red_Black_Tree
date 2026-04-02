@@ -1,0 +1,61 @@
+#include <iostream>
+using namespace std;
+
+enum Color { RED, BLACK };
+
+struct Node {
+    int data;
+    Color color;
+    Node *left, *right;
+    Node(int val) : data(val), color(RED), left(nullptr), right(nullptr) {}
+};
+
+class RBTree {
+    Node* root;
+
+    void inorder(Node* node) {
+        if (!node) return;
+        inorder(node->left);
+        cout << node->data << "(" << (node->color == RED ? "R" : "B") << ") ";
+        inorder(node->right);
+    }
+
+public:
+    RBTree() : root(nullptr) {}
+
+    void insert(int val) {
+        // For simplicity, just insert like a BST (no balancing here)
+        Node* newNode = new Node(val);
+        if (!root) {
+            newNode->color = BLACK; // root is always black
+            root = newNode;
+            return;
+        }
+        Node* temp = root;
+        while (true) {
+            if (val < temp->data) {
+                if (!temp->left) { temp->left = newNode; break; }
+                temp = temp->left;
+            } else {
+                if (!temp->right) { temp->right = newNode; break; }
+                temp = temp->right;
+            }
+        }
+    }
+
+    void display() {
+        inorder(root);
+        cout << endl;
+    }
+};
+
+int main() {
+    RBTree tree;
+    tree.insert(10);
+    tree.insert(20);
+    tree.insert(30);
+
+    cout << "Inorder traversal:\n";
+    tree.display();
+    return 0;
+}
